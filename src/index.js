@@ -1,14 +1,16 @@
 const {io, server} = require('./app');
-const {PORT, PUBLIC_DIR}  = require('./constants');
+const {PORT}  = require('./constants');
 
-let count = 0;
+const welcomeMessage = 'Welcome!';
+const newClientJoined = 'Here comes a new challenger!';
+
 io.on('connection', (socket) => {
     console.log('Here comes a new challenger!');
-    socket.emit('countUpdated', count);
+    socket.emit('message', welcomeMessage);
+    io.emit('message', newClientJoined);
 
-    socket.on('increment', () => {
-        count++;
-        io.emit('countUpdated', count)
+    socket.on('sendMessage', (message) => {
+        io.emit('receiveMessage', message);
     });
 });
 

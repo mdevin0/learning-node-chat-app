@@ -2,10 +2,15 @@
 <html>
     <head>
         <title>Chat App</title>
+        <link rel="stylesheet" href="/css/style.css" />
     </head>
     <body>
         <h1>Chat App! @.@</h1>
-        <button id="inc">+1</button>
+        <textarea id="chatArea"></textarea>
+        <form id="chatForm">
+            <input name="messageToSend" type="text" placeholder="Type your message here" />
+            <button id="send">Send</button>
+        </form>
         <script src="socket.io/socket.io.js"></script>
         <script src="js/chat.js"></script>
     </body>
