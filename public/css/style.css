@@ -16,3 +16,20 @@ body {
 html {
     background-color: #111111;
 }
+
+p .sent {
+    color: #666666;
+}
+
+p .received {
+    font-weight: bold;
+}
+
+#chatArea {
+    background-color: #333333;
+    color: #bbbbbb;
+    display: block;
+    height: 80vh;
+    margin-bottom: 20px;
+    padding: 10px;
+}

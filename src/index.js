@@ -7,11 +7,20 @@ const newClientJoined = 'Here comes a new challenger!';
 io.on('connection', (socket) => {
     console.log('Here comes a new challenger!');
     socket.emit('message', welcomeMessage);
-    io.emit('message', newClientJoined);
+    socket.broadcast.emit('message', newClientJoined);
 
-    socket.on('sendMessage', (message) => {
-        io.emit('receiveMessage', message);
+    socket.on('disconnect', () => {
+        io.emit('sendMessage', 'Farewell, hero!');
     });
+
+    socket.on('message', (message) => {
+        socket.broadcast.emit('message', message);
+    });
+
+    socket.on('sendLocation', (coords) => {
+        io.emit('message', `https://google.com/maps?q=${coords.lat},${coords.long}`);
+    })
+
 });
 
 server.listen(PORT, () => {

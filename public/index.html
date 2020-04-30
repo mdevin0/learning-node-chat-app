@@ -6,11 +6,12 @@
     </head>
     <body>
         <h1>Chat App! @.@</h1>
-        <textarea id="chatArea"></textarea>
+        <div id="chatArea" readonly></div>
         <form id="chatForm">
             <input name="messageToSend" type="text" placeholder="Type your message here" />
             <button id="send">Send</button>
         </form>
+        <button id="sendLocation">Send Location</button>
         <script src="socket.io/socket.io.js"></script>
         <script src="js/chat.js"></script>
     </body>
