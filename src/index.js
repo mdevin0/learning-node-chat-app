@@ -1,5 +1,3 @@
-const Filter = require('bad-words');
-
 const {server} = require('./app');
 const {PORT}  = require('./constants');
 

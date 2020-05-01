@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
+const Filter = require('bad-words');
 
 const {PUBLIC_DIR}  = require('./constants');
 const {generateMessage} = require('./utils/message');
@@ -31,7 +32,7 @@ io.on('connection', (socket) => {
             return callback('Profanity is not allowed!');
         }
 
-        socket.broadcast.emit('message', generateMessage(message));
+        io.emit('message', generateMessage(message));
         callback();
     });
 
