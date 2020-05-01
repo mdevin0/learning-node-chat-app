@@ -5,10 +5,12 @@ const $chatArea = document.querySelector('#chatArea');
 const $chatForm = document.querySelector('#chatForm');
 const $sendButton = document.querySelector('#send');
 const $locationButton = document.querySelector('#sendLocation');
+const $chatList = document.querySelector('#chatList');
 
 // Templates
 const messageTemplate = document.querySelector('#messageTemplate').innerHTML;
 const locationMessageTemplate = document.querySelector('#locationMessageTemplate').innerHTML;
+const chatListTemplate = document.querySelector('#chatListTemplate').innerHTML;
 
 // Options
 const {user, room} = Qs.parse(location.search, {ignoreQueryPrefix: true});
@@ -70,6 +72,14 @@ $locationButton.addEventListener('click', (e) => {
         });
     });
 
+});
+
+socket.on('roomChanged', ({room, users}) => {
+    const html = Mustache.render(chatListTemplate, {
+        room,
+        users
+    });
+    chatList.innerHTML = html;
 });
 
 socket.emit('join', {user, room}, (error) => {

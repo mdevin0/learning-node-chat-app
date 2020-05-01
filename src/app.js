@@ -23,6 +23,10 @@ io.on('connection', (socket) => {
         const user = removeUser(socket.id);
         if(user){
             io.to(user.room).emit('message', generateMessage('Server', `Farewell, ${user.name}!`));
+            io.to(user.room).emit('roomChanged', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            });
         }
         console.log(`Socket id '${socket.id}' disconnected.`);
     });
@@ -39,6 +43,10 @@ io.on('connection', (socket) => {
 
         socket.emit('message', generateMessage(user.name, welcomeMessage));
         socket.broadcast.to(user.room).emit('message', generateMessage('Server', `${user.name} has joined.`));
+        io.to(user.room).emit('roomChanged', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
 
         callback();
     });
