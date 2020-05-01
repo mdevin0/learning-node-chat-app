@@ -22,10 +22,36 @@ const createMessage = (message) => {
         createdAt: moment(message.createdAt).format('hh:mm a')
     });
     $chatArea.insertAdjacentHTML('beforeend', html);
+};
+
+const autoScroll = () => {
+    // Get new message element
+    const $newMessage = $chatArea.lastElementChild;
+
+    // Height of new message
+    const newMessageStyles = getComputedStyle($newMessage);
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+    const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
+
+    // Visible height
+    const visibleHeight = $chatArea.offsetHeight;
+    
+    // Messages container height
+    const containerHeight = $chatArea.scrollHeight;
+
+    // How far has been scrolled?
+    const scrollOffset = $chatArea.scrollTop + visibleHeight;
+
+    if(containerHeight - newMessageHeight <= scrollOffset) {
+        $chatArea.scrollTop = $chatArea.scrollHeight;
+    }
+
+
 }
 
 socket.on('message', (message) => {
     createMessage(message);
+    autoScroll();
 });
 
 socket.on('locationMessage', (message) => {
@@ -35,6 +61,7 @@ socket.on('locationMessage', (message) => {
         createdAt: moment(message.createdAt).format('hh:mm a')
     });
     $chatArea.insertAdjacentHTML('beforeend', html);
+    autoScroll();
 
 });
 
