@@ -12,7 +12,8 @@ const locationMessageTemplate = document.querySelector('#locationMessageTemplate
 
 const createMessage = (message) => {
     const html = Mustache.render(messageTemplate, {
-        message
+        text: message.text,
+        createdAt: moment(message.createdAt).format('hh:mm a')
     });
     $chatArea.insertAdjacentHTML('beforeend', html);
 }
@@ -21,9 +22,10 @@ socket.on('message', (message) => {
     createMessage(message);
 });
 
-socket.on('locationMessage', (link) => {
-    const html = Mustache.render(locationMessageTemplate, {
-        link
+socket.on('locationMessage', (message) => {
+    const html = Mustache.render(locationMessageTemplate,  {
+        text: message.text,
+        createdAt: moment(message.createdAt).format('hh:mm a')
     });
     $chatArea.insertAdjacentHTML('beforeend', html);
 
@@ -38,7 +40,6 @@ $chatForm.addEventListener('submit', (e) => {
 
     socket.emit('message', message, (error) => {
         $sendButton.removeAttribute('disabled');
-        $chatForm
 
         if(error){
             return console.log(error);
