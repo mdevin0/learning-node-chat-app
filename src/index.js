@@ -1,3 +1,5 @@
+const Filter = require('bad-words');
+
 const {io, server} = require('./app');
 const {PORT}  = require('./constants');
 
@@ -13,12 +15,20 @@ io.on('connection', (socket) => {
         io.emit('sendMessage', 'Farewell, hero!');
     });
 
-    socket.on('message', (message) => {
+    socket.on('message', (message, callback) => {
+        const filter = new Filter();
+
+        if(filter.isProfane(message)){
+            return callback('Profanity is not allowed!');
+        }
+
         socket.broadcast.emit('message', message);
+        callback();
     });
 
-    socket.on('sendLocation', (coords) => {
+    socket.on('sendLocation', (coords, callback) => {
         io.emit('message', `https://google.com/maps?q=${coords.lat},${coords.long}`);
+        return callback();
     })
 
 });

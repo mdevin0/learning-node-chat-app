@@ -18,8 +18,13 @@ socket.on('message', (message) => {
 chatForm.addEventListener('submit', (e) => {
     const message = e.target.elements.messageToSend.value;
     e.preventDefault();
-    socket.emit('message', message);
-    createMessage(message, false);
+    socket.emit('message', message, (error) => {
+        if(error){
+            return console.log(error);
+        }
+        console.log('Message delivered!');
+        createMessage(message, false);
+    });
 
 });
 
@@ -32,6 +37,8 @@ locationButton.addEventListener('click', (e) => {
         socket.emit('sendLocation', {
             lat: position.coords.latitude,
             long: position.coords.longitude,
+        }, () => {
+            console.log('Location shared!');
         });
     });
 
